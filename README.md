@@ -6,19 +6,21 @@ Testsuite for Compilers (185.A48) - Summer term 2022 - Vienna University of Tech
 
 The file structure resembles closely the hand in file structure (`abgabe`), which is basically the following:
 
-`
+```
 |
 |-abgabe
 \
- |-asma
- |-asmb
- |-scanner
- \
-  |-test_suite_scanner.c
-  |-README.md
- |-parser
- ...
-`
+-|-asma
+-\
+--|-todo
+-|-asmb
+-|-scanner
+-\
+--|-test_suite_scanner.c
+--|-README.md
+-|-parser
+-...
+```
 
 
 # how to contribute?
