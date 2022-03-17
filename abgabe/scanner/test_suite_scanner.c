@@ -1,51 +1,77 @@
-#include <unistd.h>
 #include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <sys/types.h>
+#include <unistd.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-int main_test_loop(char * input, char * output);
-int test_loop(int parent_child_pipe, int child_parent_pipe, char * input, char * output);
+/**
+ * This function is used for forking, creating pipes and shutting down the scanner again.
+ *
+ * @input - The first string is the ''input'', so this is given to the scanner program.
+ * @output - The second string is the ''should-output'', so what the response of the scanner, given the input should be (can be left blank in case of an error test case)
+ * @should_fail - If set to one it is tested if the scanner program terminates with exit code 1
+ */
+int main_test_loop(char * input, char * output, int should_fail);
 
+/**
+ * This function is used for input-output-checking.
+ */
+int test_loop(int parent_child_pipe, int child_parent_pipe, char * input, char * output, int should_fail);
+
+/**
+ * Main is just for test cases -> How to include test cases?
+ * Look below to see some examples, you can basically just copy paste and then edit the two strings.
+ */
 int main(int argc, char * argv[]) {
     int test_cases_executed = 0;
     int test_cases_successful = 0;
     
     {
         // Test 1:
-	test_cases_successful += main_test_loop("test", "id test\n");
+	test_cases_successful += main_test_loop("test", "id test\n",0);
 	test_cases_executed += 1;
     }
     {
         // Test 2:
-	test_cases_successful += main_test_loop("39end", "num 39\nend\n");
+	test_cases_successful += main_test_loop("39end end39", "num 39\nend\nid end39\n",0);
 	test_cases_executed += 1;
     }
     {
         // Test 3:
-	test_cases_successful += main_test_loop("// kommentar", "");
+	test_cases_successful += main_test_loop("// kommentar", "",0);
 	test_cases_executed += 1;
     }
     {
         // Test 4:
-	test_cases_successful += main_test_loop(";(){},:=[]+*>-@", ";\n(\n)\n{\n}\n,\n:\n=\n[\n]\n+\n*\n>\n-\n@\n");
+	test_cases_successful += main_test_loop(";(){},:=[]+*>-@end return goto if var not and", ";\n(\n)\n{\n}\n,\n:\n=\n[\n]\n+\n*\n>\n-\n@\nend\nreturn\ngoto\nif\nvar\nnot\nand\n",0);
 	test_cases_executed += 1;
     }
-
-
-
-
-
-
-
+    {
+        // Test 5:
+	test_cases_successful += main_test_loop("endreturngotoifvarnotand", "id endreturngotoifvarnotand\n",0);
+	test_cases_executed += 1;
+    }
+    {
+        // Test 6:
+	test_cases_successful += main_test_loop("$10 10", "num 16\nnum 10\n",0);
+	test_cases_executed += 1;
+    }
+    {
+        // Test 7:
+	test_cases_successful += main_test_loop("%", "",1);
+	test_cases_executed += 1;
+    }
+    
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
 		    test_cases_executed,
 		    test_cases_successful);
 }
 
-int main_test_loop(char * input, char * output) {
+int main_test_loop(char * input, char * output, int should_fail) {
 
     int parent_child_pipe[2], child_parent_pipe[2];
     int ret = pipe(parent_child_pipe);
@@ -80,11 +106,28 @@ int main_test_loop(char * input, char * output) {
             close(parent_child_pipe[0]); // close read end
             close(child_parent_pipe[1]); // close write end
 
-            ret = test_loop(parent_child_pipe[1], child_parent_pipe[0], input, output);           
+            ret = test_loop(parent_child_pipe[1], child_parent_pipe[0], input, output, should_fail);           
 
-	    if (kill(pid, SIGTERM) < 0) {
-	        fprintf(stderr, "sigterm failed! \n");
-            }           
+	    if (should_fail == 0) {
+		if (kill(pid, SIGTERM) < 0) {
+	            fprintf(stderr, "sigterm failed! \n");
+                }
+	    } else {
+	        int status;
+		pid_t cur_pid;
+		while ((cur_pid = wait(&status)) != pid) {
+	            if (cur_pid != -1) continue;
+		    if (errno == EINTR) continue;
+		    fprintf(stderr, "Wait failed!\n");
+		    break;
+		}
+		if (cur_pid != -1 && WEXITSTATUS(status) == 1) {
+		    ret = 0;
+		}
+
+	    }
+	               
+
 
 	    if (ret == 0) {
                 fprintf(stdout, "Test case successful! \n");
@@ -101,7 +144,7 @@ int main_test_loop(char * input, char * output) {
     }
 }    
 
-int test_loop(int parent_child_fd, int child_parent_fd, char * input, char * output) {
+int test_loop(int parent_child_fd, int child_parent_fd, char * input, char * output, int should_fail) {
 
     int ret_state = 0;
     fprintf(stdout, "reached test_loop state. \n");
