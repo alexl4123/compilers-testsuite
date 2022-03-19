@@ -98,9 +98,11 @@ int main_test_loop(char * input, char * output, int should_fail) {
             dup2(parent_child_pipe[0], STDIN_FILENO);
             dup2(child_parent_pipe[1], STDOUT_FILENO);
 
-            execlp("scanner", "scanner", NULL);
+	    char * path_string = "../../../abgabe/scanner/scanner";
+            execlp(path_string, "scanner", NULL);
             
-            break;
+	    fprintf(stderr, "execlp failed with path: %s\n", path_string);
+	    exit(-1);
         default:
             // parent tasks
             close(parent_child_pipe[0]); // close read end
