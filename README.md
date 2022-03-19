@@ -2,6 +2,27 @@
 
 Testsuite for Compilers (185.A48) - Summer term 2022 - Vienna University of Technology
 
+# How to test?
+
+Put the git-repo (compilers-testsuite) beside the `abgabe` folder on the complang machine, like this:
+
+```
+|-abgabe
+\
+-|-scanner
+-\
+--|scanner
+--|...
+-|...
+|-compilers-testsuite
+\
+-|-abgabe
+-\
+--|...
+```
+
+One can either copy the files there (e.g. with `scp`) or by cloning them from git with `git clone ...`.
+
 # File structure
 
 The file structure resembles closely the hand in file structure (`abgabe`), which is basically the following:
