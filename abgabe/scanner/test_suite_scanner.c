@@ -81,7 +81,7 @@ int main_test_loop(char * input, char * output, int should_fail) {
     ret = pipe(child_parent_pipe);
     if (ret < 0) {
         fprintf(stderr, "Cannot create child_parent_pipe! \n");
-    }   
+    }
 
     fflush(stdout);
     pid_t pid = fork();
@@ -98,7 +98,7 @@ int main_test_loop(char * input, char * output, int should_fail) {
             dup2(parent_child_pipe[0], STDIN_FILENO);
             dup2(child_parent_pipe[1], STDOUT_FILENO);
 
-            char * path_string = "../../../abgabe/scanner/scanner";
+            char * path_string = "../../abgabe/scanner/scanner";
             execlp(path_string, "scanner", NULL);
 
             fprintf(stderr, "execlp failed with path: %s\n", path_string);
@@ -108,7 +108,7 @@ int main_test_loop(char * input, char * output, int should_fail) {
             close(parent_child_pipe[0]); // close read end
             close(child_parent_pipe[1]); // close write end
 
-            ret = test_loop(parent_child_pipe[1], child_parent_pipe[0], input, output, should_fail);           
+            ret = test_loop(parent_child_pipe[1], child_parent_pipe[0], input, output, should_fail);
 
             if (should_fail == 0) {
                 if (kill(pid, SIGTERM) < 0) {
@@ -145,7 +145,7 @@ int main_test_loop(char * input, char * output, int should_fail) {
 
             break;
     }
-}    
+}
 
 int test_loop(int parent_child_fd, int child_parent_fd, char * input, char * output, int should_fail) {
 
@@ -160,7 +160,7 @@ int test_loop(int parent_child_fd, int child_parent_fd, char * input, char * out
     }
 
 
-    int size = 512;    
+    int size = 512;
     char line[size];
     memset(line, 0, sizeof line);
 
