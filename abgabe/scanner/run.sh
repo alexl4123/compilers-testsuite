@@ -1,7 +1,8 @@
 #/bin/bash
 
-make clean
+make -C ../../../abgabe/scanner clean
 gcc test_suite_scanner.c -o test_suite_scanner
-make
+make -C ../../../abgabe/scanner
 ./test_suite_scanner
-make clean
+make -C ../../../abgabe/scanner clean
+rm -f test_suite_scanner
