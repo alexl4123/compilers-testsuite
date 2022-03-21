@@ -1,0 +1,5 @@
+*
+!run.sh
+!.gitignore
+!README.md
+!test_suite_scanner.c
