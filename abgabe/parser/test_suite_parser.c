@@ -117,7 +117,7 @@ int main_test_loop(char * input, int fail_case) {
     ret = pipe(child_parent_pipe);
     if (ret < 0) {
         fprintf(stderr, "Cannot create child_parent_pipe! \n");
-    }   
+    }
 
     fflush(stdout);
     pid_t pid = fork();
@@ -169,10 +169,12 @@ int main_test_loop(char * input, int fail_case) {
                 fprintf(stdout, "Test case failed with input: %s \n", input);
                 ret = 0;
             }
+            printf("\n\n");
             return ret;
 
     }
-}    
+    printf("\n\n");
+}
 
 int test_loop(int parent_child_fd, int child_parent_fd, char * input) {
 
@@ -188,7 +190,7 @@ int test_loop(int parent_child_fd, int child_parent_fd, char * input) {
         ret_state = -1;
     }
 
-    int size = 512;    
+    int size = 512;
     char line[size];
     memset(line, 0, sizeof line);
 
