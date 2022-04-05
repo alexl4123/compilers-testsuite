@@ -308,6 +308,132 @@ int execute_test_cases() {
                 "long a = f(5l) + g(6l);\nif(a != 11) {exit(1);}", SHOULD_WORK);
         test_cases_executed += 1;
     }
+    {
+        // Test 8:
+        test_cases_successful += main_test_loop(
+                "f(a) return a > 5; end;", 
+                "long a = f(4);\nif(a != 0) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 9:
+        test_cases_successful += main_test_loop(
+                "f(a) return 7 > 5; end;", 
+                "long a = f(4);\nif(a != 1) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 10:
+        test_cases_successful += main_test_loop(
+                "f(a) return 7 > 7; end;", 
+                "long a = f(4);\nif(a != 0) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 11:
+        test_cases_successful += main_test_loop(
+                "f(a) return 7 = 7; end;", 
+                "long a = f(4);\nif(a != 1) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 12:
+        test_cases_successful += main_test_loop(
+                "f(a) return 7 = 8; end;", 
+                "long a = f(4);\nif(a != 0) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 13:
+        test_cases_successful += main_test_loop(
+                "f(a) return 6 = 7; end;", 
+                "long a = f(4);\nif(a != 0) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 14:
+        test_cases_successful += main_test_loop(
+                "f(a) return 1 and 0; end;", 
+                "long a = f(4);\nif(a != 0) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 15:
+        test_cases_successful += main_test_loop(
+                "f(a) return 1 and 3; end;", 
+                "long a = f(4);\nif(a != 1) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 16:
+        test_cases_successful += main_test_loop(
+                "f(a) return 31 and 8; end;", 
+                "long a = f(4);\nif(a != 8) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 17:
+        test_cases_successful += main_test_loop(
+                "f(a) return -a; end;", 
+                "long a = f(4);\nif(a != -4) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 18:
+        test_cases_successful += main_test_loop(
+                "f(a) return 4 + (---a); end;", 
+                "long a = f(4);\nif(a != 0) {exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 19:
+        test_cases_successful += main_test_loop(
+                "f(a) return not 0; end;", 
+                "long a = f(4);\nif(a != -1) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 20:
+        test_cases_successful += main_test_loop(
+                "f(a) return a[0]; end;", 
+                "long arr[1] = {3};\nlong a = f(arr);\nif(a != 3) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 21:
+        test_cases_successful += main_test_loop(
+                "f(a) return a[3]; end;", 
+                "long arr[5] = {3,4,5,6,7};\nlong a = f(arr);\nif(a != 6) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 22:
+        test_cases_successful += main_test_loop(
+                "f{a,b}(c,d) return a; end;", 
+                "struct f_stage1 {\n    long (*func)(long, long, struct f_stage1 *);\n    long a;\n    long b;\n};\nextern long f(long c, long d, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 5, 6};\nlong test = f(7,8,&f1);\nif(test != 5) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 23:
+        test_cases_successful += main_test_loop(
+                "f{a,b}(c,d) return b; end;", 
+                "struct f_stage1 {\n    long (*func)(long, long, struct f_stage1 *);\n    long a;\n    long b;\n};\nextern long f(long c, long d, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 5, 6};\nlong test = f(7,8,&f1);\nif(test != 6) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 24:
+        test_cases_successful += main_test_loop(
+                "f{a,b}(c,d) return c; end;", 
+                "struct f_stage1 {\n    long (*func)(long, long, struct f_stage1 *);\n    long a;\n    long b;\n};\nextern long f(long c, long d, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 5, 6};\nlong test = f(7,8,&f1);\nif(test != 7) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 25:
+        test_cases_successful += main_test_loop(
+                "f{a,b}(c,d) return d; end;", 
+                "struct f_stage1 {\n    long (*func)(long, long, struct f_stage1 *);\n    long a;\n    long b;\n};\nextern long f(long c, long d, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 5, 6};\nlong test = f(7,8,&f1);\nif(test != 8) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
 
 
 
