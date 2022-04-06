@@ -96,6 +96,31 @@ int main(int argc, char * argv[]) {
         test_cases_successful += main_test_loop("f(x,y,) end;", PARSER_SHOULD_FAIL);
         test_cases_executed += 1;
     }
+    {
+        // Test 13: 
+        test_cases_successful += main_test_loop("", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 14: 
+        test_cases_successful += main_test_loop("end39", PARSER_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 15: 
+        test_cases_successful += main_test_loop("f(a) return ((b + c) * (d and 7) * (not 6)) > (7 = 8); end;", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 16: 
+        test_cases_successful += main_test_loop("f(a) return ((b + c) * (d and 7) * (not 6)) = (7 = 8) = 9; end;", PARSER_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 16: 
+        test_cases_successful += main_test_loop("f(a) return (((b + c) * (d and 7) * (not 6)) = (7 = 8)) = 9; end;", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
 
 
 

@@ -65,6 +65,16 @@ int main(int argc, char * argv[]) {
         test_cases_successful += main_test_loop("%", "",1);
         test_cases_executed += 1;
     }
+    {
+        // Test 8:
+        test_cases_successful += main_test_loop("not--not-notnotnot", "not\n-\n-\nnot\n-\nid notnotnot\n",0);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 9:
+        test_cases_successful += main_test_loop("01234", "num 1234\n",0);
+        test_cases_executed += 1;
+    }
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
             test_cases_executed,

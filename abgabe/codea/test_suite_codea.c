@@ -434,7 +434,20 @@ int execute_test_cases() {
                 "struct f_stage1 {\n    long (*func)(long, long, struct f_stage1 *);\n    long a;\n    long b;\n};\nextern long f(long c, long d, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 5, 6};\nlong test = f(7,8,&f1);\nif(test != 8) { exit(1);}", SHOULD_WORK);
         test_cases_executed += 1;
     }
-
+    {
+        // Test 26:
+        test_cases_successful += main_test_loop(
+                "f{a,b,c,d,e,f}(g,h,i,j,k,l) return g; end;", 
+                "struct f_stage1 {\n    long (*func)(long, long, long, long, long, long, struct f_stage1 *);\n    long a;\n    long b;\n     long c;\n    long d;\n    long e;\n    long f;\n};\nextern long f(long g, long h, long i, long j, long k, long l, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 6,7,8,9,10,11};\nlong test = f(0,1,2,3,4,5,&f1);\nif(test != 6) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 27:
+        test_cases_successful += main_test_loop(
+                "f{a,b,c,d,e,f}(g,h,i,j,k,l) return a; end;", 
+                "struct f_stage1 {\n    long (*func)(long, long, long, long, long, long, struct f_stage1 *);\n    long a;\n    long b;\n     long c;\n    long d;\n    long e;\n    long f;\n};\nextern long f(long g, long h, long i, long j, long k, long l, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 6,7,8,9,10,11};\nlong test = f(0,1,2,3,4,5,&f1);\nif(test != 0) { exit(1);}", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
 
 
 

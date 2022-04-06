@@ -253,6 +253,11 @@ int execute_test_cases() {
         test_cases_successful += main_test_loop("f(x) var hallo = 5; end; f(x) var hallo = 5; end; ", SHOULD_WORK);
         test_cases_executed += 1;
     }
+    {
+        // Test 22:
+        test_cases_successful += main_test_loop("f(x,x) var hallo = 5; end; f(x) var hallo = 5; end; ", SHOULD_WORK);
+        test_cases_executed += 1;
+    }
 
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
