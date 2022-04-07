@@ -2,6 +2,5 @@
 
 The following convention is assumed: There exists an executable program which is named `parser` and is in the location specified as in the general `README.md` of this repo.
 
-If this condition is satisfied, one can build the test suite simply with gcc, so e.g. `gcc test_suite_parser.c` and then execute it by `./a.out`.
-
+If this condition is satisfied, one can execute the tests via `./run.sh` (one might need to change permissions of this file, e.g. by `chmod +x run.sh`).
  
