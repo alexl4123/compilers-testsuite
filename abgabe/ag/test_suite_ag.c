@@ -255,7 +255,12 @@ int execute_test_cases() {
     }
     {
         // Test 22:
-        test_cases_successful += main_test_loop("f(x,x) var hallo = 5; end; f(x) var hallo = 5; end; ", SHOULD_WORK);
+        test_cases_successful += main_test_loop("f(x,x) var hallo = 5; end; f(x) var hallo = 5; end; ", SEMANTIC_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 23:
+        test_cases_successful += main_test_loop("f(x,y,x) var hallo = 5; end; f(x) var hallo = 5; end; ", SEMANTIC_SHOULD_FAIL);
         test_cases_executed += 1;
     }
 
