@@ -29,7 +29,7 @@ enum fail_state {SHOULD_WORK = 0, SCANNER_SHOULD_FAIL = 1, PARSER_SHOULD_FAIL = 
  * @should_fail - If set to one it is tested if the scanner program terminates with exit code 1
  * @return - 1 if test case successful, 0 otherwise
  */
-int main_test_loop(char * input_codea, char * input_testfile, int fail_case);
+int main_test_loop(char * input_codeb, char * input_testfile, int fail_case);
 
 /**
  * This function is used for input-output-checking.
@@ -56,7 +56,7 @@ int main(int argc, char * argv[]) {
     execute_test_cases();
 }
 
-int main_test_loop(char * input_codea, char * input_testfile, int fail_case) {
+int main_test_loop(char * input_codeb, char * input_testfile, int fail_case) {
     test_cases_executed++;
 
     int parent_child_pipe[2], child_parent_pipe[2];
@@ -85,8 +85,8 @@ int main_test_loop(char * input_codea, char * input_testfile, int fail_case) {
             dup2(parent_child_pipe[0], STDIN_FILENO);
             dup2(child_parent_pipe[1], STDOUT_FILENO);
 
-            char * path_string = "../../../abgabe/codea/codea";
-            execlp(path_string, "codea", NULL);
+            char * path_string = "../../../abgabe/codeb/codeb";
+            execlp(path_string, "codeb", NULL);
 
             fprintf(stderr, "execlp failed with path: %s\n", path_string);
             exit(-1);
@@ -102,7 +102,7 @@ int main_test_loop(char * input_codea, char * input_testfile, int fail_case) {
     output->value = malloc(sizeof(char) * output->size);
     memset(output->value, 0, output->size);
 
-    ret = test_loop(parent_child_pipe[1], child_parent_pipe[0], input_codea, output);
+    ret = test_loop(parent_child_pipe[1], child_parent_pipe[0], input_codeb, output);
 
     int status;
     pid_t cur_pid;
