@@ -473,7 +473,7 @@ int execute_test_cases() {
     }
     {
         // Test 38:
-        test_cases_successful += main_test_loop("f(x,y) hallo : hallo : hallo : $10; end;", "", SEMANTIC_SHOULD_FAIL);
+        test_cases_successful += main_test_loop("f(x,y) hallo : hallo : hallo : \$10; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
         // Test 39:

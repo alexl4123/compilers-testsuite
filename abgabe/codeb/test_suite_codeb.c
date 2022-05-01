@@ -417,82 +417,134 @@ int execute_test_cases() {
                 "f{a,b}(c,d) return d; end;", 
                 "struct f_stage1 {\n    long (*func)(long, long, struct f_stage1 *);\n    long a;\n    long b;\n};\nextern long f(long c, long d, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 5, 6};\nlong test = f(7,8,&f1);\nif(test != 8) { exit(1);}", SHOULD_WORK);
     }
-    /*
     {
         // Test 26:
-        test_cases_successful += main_test_loop(
-                "f{a,b,c,d,e,f}(g,h,i,j,k,l) return g; end;", 
-                "struct f_stage1 {\n    long (*func)(long, long, long, long, long, long, struct f_stage1 *);\n    long a;\n    long b;\n     long c;\n    long d;\n    long e;\n    long f;\n};\nextern long f(long g, long h, long i, long j, long k, long l, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 6,7,8,9,10,11};\nlong test = f(0,1,2,3,4,5,&f1);\nif(test != 0) { exit(1);}", SHOULD_WORK);
-    }
-    {
-        // Test 27:
-        test_cases_successful += main_test_loop(
-                "f{a,b,c,d,e,f}(g,h,i,j,k,l) return a; end;", 
-                "struct f_stage1 {\n    long (*func)(long, long, long, long, long, long, struct f_stage1 *);\n    long a;\n    long b;\n     long c;\n    long d;\n    long e;\n    long f;\n};\nextern long f(long g, long h, long i, long j, long k, long l, struct f_stage1 *fs1);\nstruct f_stage1 f1 = {&f, 6,7,8,9,10,11};\nlong test = f(0,1,2,3,4,5,&f1);\nif(test != 6) { exit(1);}", SHOULD_WORK);
-    }
-    */
-    {
-        // Test 28:
         test_cases_successful += main_test_loop("f(x,x) var hallo = 5; end; f(x) var hallo = 5; end; ", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 29:
+        // Test 27:
         test_cases_successful += main_test_loop("f(x,y,x) var hallo = 5; end; f(x) var hallo = 5; end; ", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 30 :
+        // Test 28 :
         test_cases_successful += main_test_loop("f(x) hallo: var hallo = 5; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 31:
+        // Test 29:
         test_cases_successful += main_test_loop("f(x) hallo = 7; var hallo = 5; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 32:
+        // Test 30:
         test_cases_successful += main_test_loop("f(x,y,) end;", "", PARSER_SHOULD_FAIL);
     }
     {
-        // Test 33:
+        // Test 31:
         test_cases_successful += main_test_loop("f(x) var x = 5; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 34:
+        // Test 32:
         test_cases_successful += main_test_loop("f(x) x: return 5; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 35:
+        // Test 33:
         test_cases_successful += main_test_loop("f(x) var hallo = hallo; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 36:
+        // Test 34:
         test_cases_successful += main_test_loop("\n <%&\n", "", SCANNER_SHOULD_FAIL);
     }
     {
-        // Test 37:
+        // Test 35:
         test_cases_successful += main_test_loop("f() end;", "", PARSER_SHOULD_FAIL);
     }
     {
-        // Test 38:
-        test_cases_successful += main_test_loop("f(x,y) hallo : hallo : hallo : $10; end;", "", SEMANTIC_SHOULD_FAIL);
+        // Test 36:
+        test_cases_successful += main_test_loop("f(x,y) hallo : hallo : hallo : \$10; end;", "", SEMANTIC_SHOULD_FAIL);
     }
     {
-        // Test 39:
+        // Test 37:
         test_cases_successful += main_test_loop("hallo", "", PARSER_SHOULD_FAIL);
     }
     {
-        // Test 40:
+        // Test 38:
         test_cases_successful += main_test_loop(
                 "f(x,y,z) return x; end;", 
                 "long a = f(5,6,7);\nif(a != 5) { exit(1);}", SHOULD_WORK);
     }
     {
-        // Test 41:
+        // Test 39:
         test_cases_successful += main_test_loop(
                 "f(x,y,z) return z; end;", 
                 "long a = f(5,6,7);\nif(a != 7) { exit(1);}", SHOULD_WORK);
     }
-
-
+    {
+        // Test 40:
+        test_cases_successful += main_test_loop(
+                "f(a) return g@(x); end;", 
+                "long a = f(5,6,7);\nif(a != 7) { exit(1);}", SEMANTIC_SHOULD_FAIL);
+    }
+    // ------------------ONLY-CODEB-TESTS
+    {
+        // Test 41:
+        test_cases_successful += main_test_loop(
+                "f(x) goto test; return 4; test: return 5; end;", 
+                "long a = f(0);\nif(a != 5) { exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 42:
+        test_cases_successful += main_test_loop(
+                "f(x) if (3) goto test; return 4; test: return 5; end;", 
+                "long a = f(0);\nif(a != 5) { exit(1);}", SHOULD_WORK);
+    }    
+    {
+        // Test 43:
+        test_cases_successful += main_test_loop(
+                "f(x) if (2) goto test; return 4; test: return 5; end;", 
+                "long a = f(0);\nif(a != 4) { exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 44:
+        test_cases_successful += main_test_loop(
+                "f(x) var y = 5; return y; end;", 
+                "long a = f(0);\nif(a != 5) { exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 45:
+        test_cases_successful += main_test_loop(
+                "f(x) if (2 = x) goto test; return 4; test: var y = 6; var z = 7; return (x + y + z); end;", 
+                "long a = f(2);\nif(a != 15) { exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 46:
+        test_cases_successful += main_test_loop(
+                "f(x) x = 5; return x; end;", 
+                "long a = f(2);\nif(a != 5) { exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 47:
+        test_cases_successful += main_test_loop(
+                "f(x) x[1] = 5; return x; end;", 
+                "long test[5] = {0,0,0,0,0};\nlong a = f(test);\nif(test[1] != 5) { exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 48:
+        test_cases_successful += main_test_loop(
+                "f(x) if (x = 5) goto test; return 1; test: return 0; end; g(x) if (x = 5) goto test; return 0; test: return 1; end;", 
+                "long a = f(5);\nif(a != 0) { exit(1);}\nlong b = g(6);\nif(b != 0) { exit(1);}\n", SHOULD_WORK);
+    }
+    {
+        // Test 49:
+        // Initial idea for this (and the stage_1-test-cases) test case is from: https://github.com/flofriday/UEB-Testsuite
+        test_cases_successful += main_test_loop(
+                "f(x) return g{x}; end; g(x) return x; end;", 
+                "struct f_stage1 { long (*func)(long); long a; }; extern long g(long); extern long* f(long); long * fs = f(1); struct f_stage1 fc = { (long (*)(long)) fs, *(fs + 1)}; if(fc.a == 1 && fc.func(1) == 1) { exit(0);} exit(1);\n", SHOULD_WORK);
+    }
+    {
+        // Test 50:
+        test_cases_successful += main_test_loop(
+                "f(x,y,z) return g{x,y,z}; end; g(x) return x; end;", 
+                "struct f_stage1 { long (*func)(long); long a; long b; long c; }; extern long* f(long,long,long); long * fs = f(1,2,3); struct f_stage1 fc = { (long (*) (long)) fs, *(fs + 1), *(fs + 2), *(fs + 3)}; if(fc.a == 1 && fc.b == 2 && fc.c == 3 && fc.func(1) == 1) { exit(0);} exit(1);\n", SHOULD_WORK);
+    }
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
             test_cases_executed,
