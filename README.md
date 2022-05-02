@@ -9,6 +9,10 @@ repository.
 
 <br>
 
+## Other testsuits:
+
+[flofriday/UEB-Testsuite](https://github.com/flofriday/UEB-Testsuite)
+
 ## Usage
 
 Put the git-repo (compilers-testsuite) on the same level as the `abgabe` folder on the complang machine.
