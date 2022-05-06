@@ -583,6 +583,25 @@ int execute_test_cases() {
                 "f(x,y) return g{x,y}@(1,3); end; g{x,y}(z,k) return h(x+y+z+k); end; h(x) return (x*2); end;", 
                 "long fc = f(5,7); if(fc == 32) { exit(0);} exit(1);\n", SHOULD_WORK);
     }
+    //-----------------------------------------------------------------------------
+    // AG Misunderstanding fix
+    {
+        // Test 57:
+        test_cases_successful += main_test_loop("f{x}(x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 58:
+        test_cases_successful += main_test_loop("f{x,y}(x,y) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 59:
+        test_cases_successful += main_test_loop("f{x,y}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 60:
+        test_cases_successful += main_test_loop("f{x}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    //-----------------------------------------------------------------------------
 
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",

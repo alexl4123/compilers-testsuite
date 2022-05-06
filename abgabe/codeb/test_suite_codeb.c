@@ -545,6 +545,25 @@ int execute_test_cases() {
                 "f(x,y,z) return g{x,y,z}; end; g(x) return x; end;", 
                 "struct f_stage1 { long (*func)(long); long a; long b; long c; }; extern long* f(long,long,long); long * fs = f(1,2,3); struct f_stage1 fc = { (long (*) (long)) fs, *(fs + 1), *(fs + 2), *(fs + 3)}; if(fc.a == 1 && fc.b == 2 && fc.c == 3 && fc.func(1) == 1) { exit(0);} exit(1);\n", SHOULD_WORK);
     }
+    //-----------------------------------------------------------------------------
+    // AG Misunderstanding fix
+    {
+        // Test 51:
+        test_cases_successful += main_test_loop("f{x}(x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 52:
+        test_cases_successful += main_test_loop("f{x,y}(x,y) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 53:
+        test_cases_successful += main_test_loop("f{x,y}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 54:
+        test_cases_successful += main_test_loop("f{x}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    //-----------------------------------------------------------------------------
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
             test_cases_executed,

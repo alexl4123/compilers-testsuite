@@ -491,6 +491,25 @@ int execute_test_cases() {
                 "f(x,y,z) return z; end;", 
                 "long a = f(5,6,7);\nif(a != 7) { exit(1);}", SHOULD_WORK);
     }
+    //-----------------------------------------------------------------------------
+    // AG Misunderstanding fix
+    {
+        // Test 42:
+        test_cases_successful += main_test_loop("f{x}(x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 43:
+        test_cases_successful += main_test_loop("f{x,y}(x,y) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 44:
+        test_cases_successful += main_test_loop("f{x,y}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    {
+        // Test 45:
+        test_cases_successful += main_test_loop("f{x}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
+    }
+    //-----------------------------------------------------------------------------
 
 
 
