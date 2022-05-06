@@ -200,7 +200,7 @@ int execute_test_cases() {
     }
     {
         // Test 11 (higher order function):
-        test_cases_successful += main_test_loop("f{x,y,z}(x,y) end;", SHOULD_WORK);
+        test_cases_successful += main_test_loop("f{x,y,z}(x,y) end;", SEMANTIC_SHOULD_FAIL);
         test_cases_executed += 1;
     }
     {
@@ -261,6 +261,26 @@ int execute_test_cases() {
     {
         // Test 23:
         test_cases_successful += main_test_loop("f(x,y,x) var hallo = 5; end; f(x) var hallo = 5; end; ", SEMANTIC_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 24:
+        test_cases_successful += main_test_loop("f{x}(x) return x; end; ", SEMANTIC_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 25:
+        test_cases_successful += main_test_loop("f{x,y}(x,y) return x; end; ", SEMANTIC_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 26:
+        test_cases_successful += main_test_loop("f{x,y}(y,x) return x; end; ", SEMANTIC_SHOULD_FAIL);
+        test_cases_executed += 1;
+    }
+    {
+        // Test 27:
+        test_cases_successful += main_test_loop("f{x}(y,x) return x; end; ", SEMANTIC_SHOULD_FAIL);
         test_cases_executed += 1;
     }
 
