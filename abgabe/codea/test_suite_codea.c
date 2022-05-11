@@ -159,7 +159,7 @@ int main_test_loop(char * input_codea, char * input_testfile, int fail_case) {
         return 1;
     }
 
-}    
+}
 
 int compile(int type) {
 
@@ -177,7 +177,7 @@ int compile(int type) {
             } else if (type == 2) {
                 execlp("gcc", "gcc", "-o", "test", "test.o", "test_asm.o", NULL);
             } else if (type == 3) {
-                execlp("test", "test", NULL);
+                execlp("./test", "test", NULL);
             }
 
             exit(-1);
