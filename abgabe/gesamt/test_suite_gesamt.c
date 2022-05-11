@@ -177,7 +177,7 @@ int compile(int type) {
             } else if (type == 2) {
                 execlp("gcc", "gcc", "-o", "test", "test.o", "test_asm.o", NULL);
             } else if (type == 3) {
-                execlp("test", "test", NULL);
+                execlp("./test", "test", NULL);
             }
 
             exit(-1);
