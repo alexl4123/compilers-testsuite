@@ -510,7 +510,15 @@ int execute_test_cases() {
         test_cases_successful += main_test_loop("f{x}(y,x) return x; end; ", "", SEMANTIC_SHOULD_FAIL);
     }
     //-----------------------------------------------------------------------------
-
+    // Issue #6 (Callee saved registers) test
+    {
+        // Test 46 (many vars check)
+        test_cases_successful += main_test_loop("f(a,b,c,d,e,f) return (a*b) + ((-c)+d) + (e = f); end; ", "extern long f(long a, long b, long c, long d, long e, long f); long a = f(1,2,3,4,5,6); if(a != 3) {exit(1);}", SHOULD_WORK);
+    }
+    {
+        // Test 47 (Callee saved registers are r12-r15, rbx, rbp - those are checked):
+        test_cases_successful += main_test_loop("f(a,b,c,d,e,f) return (a*b) + ((-c)+d) + (e = f); end; ", "    extern long f(long a,long b,long c,long d,long e,long f); register long r12 asm (\"r12\") = (long) 314; register long r13 asm (\"r13\") = (long) 315; register long r14 asm (\"r14\") = (long) 316; register long r15 asm (\"r15\") = (long) 317; register long rbx asm (\"rbx\") = (long) 318; long r12o, r13o, r14o, r15o, rbxo; r12o = r12; r13o = r13; r14o = r14; r15o = r15; rbxo = rbx; printf(\"r12-r15-before-f>>>>\%d,\%d,\%d,\%d,\%d\\n\", r12,r13,r14,r15,rbx); long a = f(1,2,3,4,5,6); printf(\"r12-r15-after-f>>>>\%d,\%d,\%d,\%d,\%d\\n\", r12,r13,r14,r15,rbx); if ((r12o != r12) || (r13o != r13) || (r14o != r14) || (r15o != r15) || (rbxo != rbx)) {exit(1);}", SHOULD_WORK);
+    }
 
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
