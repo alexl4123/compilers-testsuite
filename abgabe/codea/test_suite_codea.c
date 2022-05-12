@@ -136,17 +136,17 @@ int main_test_loop(char * input_codea, char * input_testfile, int fail_case) {
     createFile("test.s", output->value);
 
     ret = compile(0);
-    if (ret < 0) {
+    if (ret != 0) {
         fprintf(stdout, "<<<<<TEST_CASE_RESULT: FAILED>>>>>>>>\n");
         return 0;
     }
     ret = compile(1);
-    if (ret < 0) {
+    if (ret != 0) {
         fprintf(stdout, "<<<<<TEST_CASE_RESULT: FAILED>>>>>>>>\n");
         return 0;
     }
     ret = compile(2);
-    if (ret < 0) {
+    if (ret != 0) {
         fprintf(stdout, "<<<<<TEST_CASE_RESULT: FAILED>>>>>>>>\n");
         return 0;
     }
@@ -204,7 +204,7 @@ int compile(int type) {
         return sig_status;
     } else {
         return ret_status;
-    }
+    } 
 }
 
 
