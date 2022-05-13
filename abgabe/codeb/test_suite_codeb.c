@@ -131,7 +131,7 @@ int main_test_loop(char * input_codeb, char * input_testfile, int fail_case) {
     // ------------------------ CONTINUE - IF - PARSER - WORKED ---------------------
 
     char * testfile = malloc(sizeof(char) * ((strlen(input_testfile) + 1) + 1000));
-    sprintf(testfile, "#include <stdlib.h>\n#include <string.h>\n#include <stdlib.h>\n#include <stdio.h>\n\nint main(int argc, char ** argv) {\n%s\n}", input_testfile);
+    sprintf(testfile, "#include <stdlib.h>\n#include <string.h>\n#include <stdlib.h>\n#include <stdio.h>\n\nint main(int argc, char ** argv) {\nlong* heap = malloc(sizeof(long) * 40);\nregister long* r15_heap asm (\"r15\") = heap;\n%s\n}", input_testfile);
     createFile("test.c", testfile);
     createFile("test.s", output->value);
 
