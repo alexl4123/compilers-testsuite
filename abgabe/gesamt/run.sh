@@ -1,9 +1,9 @@
 #/bin/bash
 
 make -C ../../../abgabe/gesamt clean
-gcc test_suite_gesamt.c -o test_suite_gesamt
+gcc test_suite_gesamt.c -o test_suite_gesamt 2> /dev/null
 make -C ../../../abgabe/gesamt
-./test_suite_gesamt
+./test_suite_gesamt 2> /dev/null
 make -C ../../../abgabe/gesamt clean
 
 rm -f test_suite_gesamt

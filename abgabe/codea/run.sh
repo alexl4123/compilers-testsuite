@@ -1,9 +1,9 @@
 #/bin/bash
 
 make -C ../../../abgabe/codea clean
-gcc test_suite_codea.c -o test_suite_codea
+gcc test_suite_codea.c -o test_suite_codea 2> /dev/null
 make -C ../../../abgabe/codea
-./test_suite_codea
+./test_suite_codea  2> /dev/null
 make -C ../../../abgabe/codea clean
 
 rm -f test_suite_codea
