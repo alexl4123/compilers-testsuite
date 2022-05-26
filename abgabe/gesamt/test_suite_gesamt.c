@@ -611,6 +611,26 @@ int execute_test_cases() {
         // Test 62 (Callee saved registers are r12-r15, rbx, rbp - those are checked):
         test_cases_successful += main_test_loop("f(a,b,c,d,e,f) return (a*b) + ((-c)+d) + (e = f); end; ", "    extern long f(long a,long b,long c,long d,long e,long f); register long r12 asm (\"r12\") = (long) 314; register long r13 asm (\"r13\") = (long) 315; register long r14 asm (\"r14\") = (long) 316; register long r15 asm (\"r15\") = (long) 317; register long rbx asm (\"rbx\") = (long) 318; long r12o, r13o, r14o, r15o, rbxo; r12o = r12; r13o = r13; r14o = r14; r15o = r15; rbxo = rbx; printf(\"r12-r15-before-f>>>>\%d,\%d,\%d,\%d,\%d\\n\", r12,r13,r14,r15,rbx); long a = f(1,2,3,4,5,6); printf(\"r12-r15-after-f>>>>\%d,\%d,\%d,\%d,\%d\\n\", r12,r13,r14,r15,rbx); if ((r12o != r12) || (r13o != r13) || (r14o != r14) || (r15o != r15) || (rbxo != rbx)) {exit(1);}", SHOULD_WORK);
     }
+    //-----------------------------------------------------------------------------
+    // Issue #9 (Missing Testcase for function return value)
+    {
+        // Test 63:
+        test_cases_successful += main_test_loop(
+                "f(arr) var sum = g(arr[0])  + z(arr[1]); return sum; end; g(x) var y = x; return y; end; z(x) var y = x; return y; end;", 
+                "long array[] = {1,2}; long res = f(array); if (res != 3) {exit(1);}\n", SHOULD_WORK);
+    }
+    {
+        // Test 64 (from UEB-Testsuite Jozott00; Jozott_20.0):
+        test_cases_successful += main_test_loop(
+                "f(arr,x) h(arr); return arr[0]@(x) + arr[1]@(x); end; h(arr) arr[0] = g{2}; arr[1] = g{3}; return 1; end; g{x}(z) return z * x; end;", 
+                "extern long f(long*, long); long arr[2]; if (f(arr,0) == 0 && f(arr,1) == 5 && f(arr,2) == 10) {exit(0);} else {exit(1);}\n", SHOULD_WORK);
+    }
+    {
+        // Test 65 (from UEB-Testsuite Jozott00; Jozott_21.0):
+        test_cases_successful += main_test_loop(
+                "f(x,y,z) return h{x}@(y)@(z); end; h{x}(y) return g{x+y}; end; g{x}(z) return z * x; end;", 
+                "extern long f(long,long,long); if (f(0,0,0) == 0 && f(1,0,0) == 0 && f(1,2,0) == 0 && f(0,0,2) == 0 && f(0,2,2) == 4 && f(1,1,2) == 4 && f(1,2,2) == 6 && f(3,2,4) == 20) {exit(0);} else {exit(1);}\n", SHOULD_WORK);
+    }
 
     fprintf(stdout, "Total test cases executed: %d, successful: %d.\n",
             test_cases_executed,
