@@ -15,8 +15,7 @@ repository.
 
 ## Usage
 
-Put the git-repo (compilers-testsuite) on the same level as the `abgabe` folder on the complang machine.
-(see section: file structure)
+Put the git-repo (compilers-testsuite) on the same level as the `abgabe` folder. The machine doesn't matter, it should work both on their Complang machine and also locally, provided you have a Linux OS. For more details on where to put the Rep see section: file structure.
 
 
 Some of the test cases have a `run.sh` file in their respective folder.
